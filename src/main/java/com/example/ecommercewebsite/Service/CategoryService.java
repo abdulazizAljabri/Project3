@@ -28,7 +28,15 @@ public class CategoryService {
         return false;
     }
 
-
+    public boolean deleteCategory(Integer categoryId , Category category){
+        for (int index = 0 ; index < categories.size() ; index++){
+            if(categories.get(index).getCategoryId() == categoryId){
+                categories.remove(index);
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }
