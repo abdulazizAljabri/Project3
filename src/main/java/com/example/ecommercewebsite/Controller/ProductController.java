@@ -39,18 +39,20 @@ public class ProductController {
      return ResponseEntity.status(400).body(new ApiResponse("Wrong categoryId"));
   }
   @PutMapping("updateProduct/{productId}")
-    public ResponseEntity updateProduct(@PathVariable @Valid Integer productId, Product product,Errors errors){
+    public ResponseEntity updateProduct(@PathVariable @Valid Integer productId,@RequestBody @Valid Product product,Errors errors){
       if(errors.hasErrors()){
           String errormessage = errors.getFieldError().getDefaultMessage();
           return ResponseEntity.status(400).body(errormessage);
       }
-      boolean isUpdate = products.updateProduct(productId, product);
-      if(isUpdate){
-          return ResponseEntity.status(200).body(new ApiResponse("Update product"));
+      if(categoryService.checkCategory(product.getCategoryId())){
+          boolean isUpdate = products.updateProduct(productId, product);
+          if(isUpdate){
+              return ResponseEntity.status(200).body(new ApiResponse("Update product"));
+          }
       }
-      return ResponseEntity.status(400).body(new ApiResponse("Wrong product"));
-
+      return ResponseEntity.status(400).body(new ApiResponse("Wrong CategoryId"));
   }
+
   @DeleteMapping("deleteProduct")
     public ResponseEntity deleteProduct (@PathVariable @Valid Integer productId){
       boolean isDelete = products.deleteProduct(productId);
@@ -59,7 +61,6 @@ public class ProductController {
       }
       return ResponseEntity.status(400).body(new ApiResponse("Wrong product"));
   }
-
 
 
 
