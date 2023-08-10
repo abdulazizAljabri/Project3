@@ -47,13 +47,16 @@ public class ProductController {
       if(categoryService.checkCategory(product.getCategoryId())){
           boolean isUpdate = products.updateProduct(productId, product);
           if(isUpdate){
-              return ResponseEntity.status(200).body(new ApiResponse("Update product"));
+              if(product.getProductId().equals(productId)){
+                  return ResponseEntity.status(200).body(new ApiResponse("Product updated"));
+              }
+              return ResponseEntity.status(400).body(new ApiResponse("Wrong productId"));
           }
       }
       return ResponseEntity.status(400).body(new ApiResponse("Wrong CategoryId"));
   }
 
-  @DeleteMapping("deleteProduct")
+  @DeleteMapping("deleteProduct/{productId}")
     public ResponseEntity deleteProduct (@PathVariable @Valid Integer productId){
       boolean isDelete = products.deleteProduct(productId);
       if(isDelete){
