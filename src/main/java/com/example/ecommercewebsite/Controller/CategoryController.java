@@ -2,6 +2,7 @@ package com.example.ecommercewebsite.Controller;
 import com.example.ecommercewebsite.ApiResponse.ApiResponse;
 import com.example.ecommercewebsite.Model.Category;
 import com.example.ecommercewebsite.Service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -20,7 +21,7 @@ public class CategoryController {
         return categoryService.getCategorieList();
     }
     @PostMapping("add")
-    public ResponseEntity addCategory(@RequestBody Category category , Errors errors){
+    public ResponseEntity addCategory(@RequestBody @Valid Category category , Errors errors){
             if (errors.hasErrors()){
                 String errormessage = errors.getFieldError().getDefaultMessage();
                 return ResponseEntity.status(400).body(errormessage);
@@ -29,7 +30,7 @@ public class CategoryController {
             return ResponseEntity.status(200).body(new ApiResponse("Category added"));
     }
     @PutMapping("update/{categoryId}")
-    public ResponseEntity updateCategory(@PathVariable Integer categoryId , @RequestBody Category category,Errors errors){
+    public ResponseEntity updateCategory(@PathVariable @Valid Integer categoryId , @RequestBody @Valid Category category, Errors errors){
         if(errors.hasErrors()){
             String errormessage = errors.getFieldError().getDefaultMessage();
             return ResponseEntity.status(400).body(errormessage);
