@@ -28,7 +28,7 @@ public class CategoryService {
         return false;
     }
 
-    public boolean deleteCategory(Integer categoryId , Category category){
+    public boolean deleteCategory(Integer categoryId){
         for (int index = 0 ; index < categories.size() ; index++){
             if(categories.get(index).getCategoryId() == categoryId){
                 categories.remove(index);
@@ -38,5 +38,14 @@ public class CategoryService {
         return false;
     }
 
+    // for checking category before add products
+    public boolean checkCategory(Integer categoryId){
+        for (int index = 0; index < categories.size(); index++){
+            if(categories.get(index).getCategoryId() == categoryId){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

@@ -27,7 +27,7 @@ public class ProductService {
         return false;
     }
 
-    public boolean deleteProduct(Integer productId,Product product){
+    public boolean deleteProduct(Integer productId){
         for(int index = 0; index < products.size();index++){
             if(products.get(index).getProductId() == productId){
                 products.remove(index);
