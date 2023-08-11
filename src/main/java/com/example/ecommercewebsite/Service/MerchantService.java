@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -18,12 +19,12 @@ public class MerchantService {
 
     private final MerchantStockService merchantStockService;
 
-    public ArrayList<Merchant> getMerchantList() {
-        return merchantrepository.getAll();
+    public List<Merchant> getMerchantList() {
+        return merchantrepository.findAll();
     }
 
     public Merchant addMerchant(Merchant merchant) {
-        merchantrepository.addMerchant(merchant);
+        merchantrepository.add(merchant);
         return merchant;
     }
 
@@ -31,7 +32,7 @@ public class MerchantService {
     public void updateMerchant(Integer merchantId, Merchant merchant) {
 
         try {
-            var updatedMerchant = merchantrepository.getAll().stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
+            var updatedMerchant = merchantrepository.findAll().stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
             updatedMerchant.setMerchantId(merchant.getMerchantId());
             updatedMerchant.setMerchantName(merchant.getMerchantName());
         } catch (NoSuchElementException exception) {
@@ -42,7 +43,7 @@ public class MerchantService {
     }
 
     public void deleteMerchant(Integer merchantId) {
-        merchantrepository.removeMerchant(merchantId);
+        merchantrepository.removeById(merchantId);
     }
 
     public void addMoreStock(Integer productId, Integer merchantId, Integer amount) {

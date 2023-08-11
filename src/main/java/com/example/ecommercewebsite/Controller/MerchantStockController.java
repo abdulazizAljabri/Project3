@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/merchantstock/")
@@ -19,7 +20,7 @@ public class MerchantStockController {
 
 
     @GetMapping("getmerchantstock")
-    public ArrayList<MerchantStock> getMerchantStock() {
+    public List<MerchantStock> getMerchantStock() {
         return merchantStockService.getMerchantStockList();
     }
 

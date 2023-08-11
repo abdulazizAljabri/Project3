@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/merchants")
@@ -20,7 +21,7 @@ public class MerchantController {
     private final MerchantService merchantservice;
 
     @GetMapping("/")
-    public ResponseEntity<ArrayList<Merchant>> getMerchant() {
+    public ResponseEntity<List<Merchant>> getMerchant() {
         return ResponseEntity.status(HttpStatus.OK).body(merchantservice.getMerchantList());
     }
 

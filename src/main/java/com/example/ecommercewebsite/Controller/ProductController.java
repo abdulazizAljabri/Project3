@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -20,7 +21,7 @@ public class ProductController {
     private final CategoryService categoryService;
 
   @GetMapping("/")
-    public ArrayList<Product> getProducts() {
+    public List<Product> getProducts() {
       return products.getProducts();
   }
 

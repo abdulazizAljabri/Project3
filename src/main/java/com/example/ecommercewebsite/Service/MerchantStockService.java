@@ -5,7 +5,7 @@ import com.example.ecommercewebsite.repository.MerchantStockRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -13,16 +13,16 @@ import java.util.NoSuchElementException;
 public class MerchantStockService {
     private final MerchantStockRepository merchantstockrepository;
 
-    public ArrayList<MerchantStock> getMerchantStockList() {
-        return this.merchantstockrepository.getAll();
+    public List<MerchantStock> getMerchantStockList() {
+        return this.merchantstockrepository.findAll();
     }
     public void addMerchantStock(MerchantStock stock) {
-        merchantstockrepository.addStock(stock);
+        merchantstockrepository.add(stock);
     }
 
     public MerchantStock updateMerchantStock( Integer merchantStockId ,MerchantStock stock){
         try{
-            var updateMerchantStock = merchantstockrepository.getAll().stream().filter(m -> m.getMerchantStockId().equals(merchantStockId)).findFirst().orElseThrow();
+            var updateMerchantStock = merchantstockrepository.findAll().stream().filter(m -> m.getMerchantStockId().equals(merchantStockId)).findFirst().orElseThrow();
             updateMerchantStock.setProductId(stock.getProductId());
             updateMerchantStock.setMerchantId(stock.getMerchantId());
             updateMerchantStock.setStock(stock.getStock());

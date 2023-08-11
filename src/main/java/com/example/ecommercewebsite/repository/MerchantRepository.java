@@ -4,27 +4,30 @@ import com.example.ecommercewebsite.Model.Merchant;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class MerchantRepository {
-    ArrayList<Merchant> merchantList = new ArrayList<>();
+    private final List<Merchant> merchantList = new ArrayList<>();
 
-    public ArrayList <Merchant> getAll(){
+    public List<Merchant> findAll() {
         return this.merchantList;
     }
-    public void addMerchant(Merchant merchant){
+
+    public void add(Merchant merchant) {
         merchantList.add(merchant);
     }
-    public Merchant findById(Integer merchantId){
+
+    public Merchant findById(Integer merchantId) {
         return merchantList.stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
     }
 
-    public void removeMerchant(Integer merchantId){
+    public void removeById(Integer merchantId) {
         var merchant = findById(merchantId);
         merchantList.remove(merchant);
     }
 
-    public Merchant updateMerchant(Merchant merchant){
+    public Merchant updateMerchant(Merchant merchant) {
         var updateMerchant = findById(merchant.getMerchantId());
         updateMerchant.setMerchantName(merchant.getMerchantName());
         return updateMerchant;

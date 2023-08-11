@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,16 +16,16 @@ import java.util.NoSuchElementException;
 public class ProductService {
     private final ProductsRepository productsRepository;
 
-    public ArrayList<Product> getProducts() {
-        return productsRepository.getProducts();
+    public List<Product> getProducts() {
+        return productsRepository.findAll();
     }
     public void addProduct(Product product) {
-        productsRepository.addProduct(product);
+        productsRepository.add(product);
     }
 
     public Product updateProduct(Integer productId,Product product){
      try{
-         var updateProduct = productsRepository.getProducts().stream().filter(p -> p.getProductId().equals(productId)).findFirst().orElseThrow();
+         var updateProduct = productsRepository.findAll().stream().filter(p -> p.getProductId().equals(productId)).findFirst().orElseThrow();
          updateProduct.setProductId(product.getProductId());
          updateProduct.setProductName(product.getProductName());
          updateProduct.setProductPrice(product.getProductPrice());
@@ -35,7 +36,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Integer productId){
-        productsRepository.removeProduct(productId);
+        productsRepository.removeById(productId);
     }
 
 }

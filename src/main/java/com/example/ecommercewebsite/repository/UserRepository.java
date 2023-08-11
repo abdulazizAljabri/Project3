@@ -4,14 +4,15 @@ import com.example.ecommercewebsite.Model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserRepository {
 
-    private final ArrayList<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
 
-    public ArrayList<User> getAll() {
+    public List<User> findAll() {
         return this.users;
     }
 

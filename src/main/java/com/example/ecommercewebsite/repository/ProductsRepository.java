@@ -4,16 +4,17 @@ import com.example.ecommercewebsite.Model.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ProductsRepository {
-    ArrayList<Product> products = new ArrayList<>();
+    private final ArrayList<Product> products = new ArrayList<>();
 
-    public ArrayList<Product> getProducts() {
+    public List<Product> findAll() {
         return this.products;
     }
 
-    public void addProduct(Product product){
+    public void add(Product product){
         products.add(product);
     }
 
@@ -21,7 +22,7 @@ public class ProductsRepository {
         return products.stream().filter(product -> product.getProductId().equals(id)).findFirst().orElseThrow();
     }
 
-    public void removeProduct(Integer id){
+    public void removeById(Integer id){
         var product = findById(id);
         products.remove(product);
     }
