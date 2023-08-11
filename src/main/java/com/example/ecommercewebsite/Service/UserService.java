@@ -1,7 +1,5 @@
 package com.example.ecommercewebsite.Service;
 
-import com.example.ecommercewebsite.Model.Merchant;
-import com.example.ecommercewebsite.Model.Product;
 import com.example.ecommercewebsite.Model.User;
 import com.example.ecommercewebsite.repository.MerchantRepository;
 import com.example.ecommercewebsite.repository.MerchantStockRepository;
@@ -10,7 +8,6 @@ import com.example.ecommercewebsite.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 

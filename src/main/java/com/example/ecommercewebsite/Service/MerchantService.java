@@ -1,13 +1,11 @@
 package com.example.ecommercewebsite.Service;
 
 import com.example.ecommercewebsite.Model.Merchant;
-import com.example.ecommercewebsite.Model.MerchantStock;
-import com.example.ecommercewebsite.Model.Product;
+
 import com.example.ecommercewebsite.repository.MerchantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 

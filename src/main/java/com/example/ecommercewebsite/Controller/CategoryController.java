@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categorys")
@@ -20,8 +21,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/")
-    public ArrayList<Category> getCategoryService() {
-        return categoryService.getCategorieList();
+    public List<Category> getCategoryService() {
+        return categoryService.getCategories();
     }
 
     @PostMapping("/")
@@ -38,11 +39,9 @@ public class CategoryController {
 
     @DeleteMapping("delete/{categoryId}")
     public ResponseEntity deleteCategory(@PathVariable Integer categoryId) {
-        boolean isDelete = categoryService.deleteCategory(categoryId);
-        if (isDelete) {
+          categoryService.deleteCategory(categoryId);
             return ResponseEntity.status(200).body(new ApiResponse("Category deleted"));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong category"));
+
     }
 
 

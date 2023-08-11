@@ -1,28 +1,32 @@
 package com.example.ecommercewebsite.Service;
 
 import com.example.ecommercewebsite.Model.Category;
+import com.example.ecommercewebsite.repository.CategoryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class CategoryService {
 
-    ArrayList<Category> categories = new ArrayList<>();
+    private final CategoryRepository categoryRepository;
 
-    public ArrayList<Category> getCategorieList() {
-        return categories;
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 
     public Category addCategory(Category category) {
-        categories.add(category);
+        categoryRepository.add(category);
         return category;
     }
 
     public void updateCategory(Integer categoryId,Category category){
         try{
-            var UpdatedCategories = categories.stream().filter(c -> c.getCategoryId()== categoryId).findFirst().orElseThrow();
+            var UpdatedCategories = categoryRepository.findAll().stream().filter(c -> c.getCategoryId()== categoryId).findFirst().orElseThrow();
             UpdatedCategories.setCategoryId(category.getCategoryId());
             UpdatedCategories.setCategoryName(category.getCategoryName());
         }catch (NoSuchElementException exception){
@@ -32,20 +36,13 @@ public class CategoryService {
 
     }
 
-    public boolean deleteCategory(Integer categoryId){
-        for (int index = 0 ; index < categories.size() ; index++){
-            if(categories.get(index).getCategoryId() == categoryId){
-                categories.remove(index);
-                return true;
-            }
-        }
-        return false;
+    public void deleteCategory(Integer categoryId){
+        categoryRepository.removeById(categoryId);
     }
 
-    // for checking category before add products
     public boolean checkCategory(Integer categoryId){
-        for (int index = 0; index < categories.size(); index++){
-            if(categories.get(index).getCategoryId() == categoryId){
+        for (int index = 0; index < categoryRepository.findAll().size(); index++){
+            if(categoryRepository.findAll().get(index).getCategoryId() == categoryId){
                 return true;
             }
         }
