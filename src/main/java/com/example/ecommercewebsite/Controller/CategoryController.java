@@ -1,4 +1,5 @@
 package com.example.ecommercewebsite.Controller;
+
 import com.example.ecommercewebsite.ApiResponse.ApiResponse;
 import com.example.ecommercewebsite.Model.Category;
 import com.example.ecommercewebsite.Service.CategoryService;
@@ -16,26 +17,25 @@ import java.util.ArrayList;
 public class CategoryController {
 
     private final CategoryService categoryService;
+
     @GetMapping("get")
     public ArrayList<Category> getCategoryService() {
         return categoryService.getCategorieList();
     }
+
     @PostMapping("add")
-    public ResponseEntity addCategory(@RequestBody @Valid Category category , Errors errors){
-            if (errors.hasErrors()){
-                String errormessage = errors.getFieldError().getDefaultMessage();
-                return ResponseEntity.status(400).body(errormessage);
-            }
-            categoryService.addCategory(category);
-            return ResponseEntity.status(200).body(new ApiResponse("Category added"));
+    public ResponseEntity<Object> addCategory(@RequestBody @Valid Category category) {
+        categoryService.addCategory(category);
+        return ResponseEntity.status(200).body(new ApiResponse("Category added"));
     }
+
     @PutMapping("update/{categoryId}")
-    public ResponseEntity updateCategory(@PathVariable @Valid Integer categoryId , @RequestBody @Valid Category category, Errors errors){
-        if(errors.hasErrors()){
+    public ResponseEntity updateCategory(@PathVariable @Valid Integer categoryId, @RequestBody @Valid Category category, Errors errors) {
+        if (errors.hasErrors()) {
             String errormessage = errors.getFieldError().getDefaultMessage();
             return ResponseEntity.status(400).body(errormessage);
         }
-         boolean isUpdate = categoryService.updateCategory(categoryId, category);
+        boolean isUpdate = categoryService.updateCategory(categoryId, category);
         if (isUpdate) {
             return ResponseEntity.status(200).body(new ApiResponse("Category Updated "));
         }
@@ -50,8 +50,6 @@ public class CategoryController {
         }
         return ResponseEntity.status(400).body(new ApiResponse("Wrong category"));
     }
-
-
 
 
 }

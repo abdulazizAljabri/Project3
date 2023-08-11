@@ -2,6 +2,7 @@ package com.example.ecommercewebsite.Service;
 
 
 import com.example.ecommercewebsite.Model.Product;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

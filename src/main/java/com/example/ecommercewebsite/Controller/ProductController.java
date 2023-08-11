@@ -3,7 +3,6 @@ import com.example.ecommercewebsite.ApiResponse.ApiResponse;
 import com.example.ecommercewebsite.Model.Product;
 import com.example.ecommercewebsite.Service.CategoryService;
 import com.example.ecommercewebsite.Service.ProductService;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 @RequestMapping("/api/v1/products/")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService products;
+    private final ProductService products ;
     private final CategoryService categoryService;
 
   @GetMapping("getProducts")

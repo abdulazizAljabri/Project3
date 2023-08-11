@@ -56,7 +56,6 @@ public class MerchantController {
         }
         return ResponseEntity.status(400).body(new ApiResponse("Wrong MerchantId"));
     }
-
-
+    // missing method ..
 
 }
