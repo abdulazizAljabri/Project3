@@ -18,7 +18,7 @@ public class MerchantStockService {
 
     public boolean updateMerchantStock( Integer merchantStockId ,MerchantStock stock){
         for(int index = 0; index < merchantStockList.size(); index++){
-            if(merchantStockList.get(index).getMerchantId().equals(merchantStockId)){
+            if(merchantStockList.get(index).getMerchantStockId().equals(merchantStockId)){
                 merchantStockList.set(index,stock);
                 return true;
             }
@@ -27,7 +27,7 @@ public class MerchantStockService {
     }
     public boolean deleteMerchantStock(Integer merchantStockId){
         for (int index = 0; index < merchantStockList.size(); index++){
-            if(merchantStockList.get(index).getMerchantId().equals(merchantStockId)){
+            if(merchantStockList.get(index).getMerchantStockId().equals(merchantStockId)){
                 merchantStockList.remove(index);
                 return true;
             }

@@ -7,7 +7,6 @@ import com.example.ecommercewebsite.Service.MerchantStockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,37 +17,28 @@ import java.util.ArrayList;
 public class MerchantController {
 
     private final MerchantService merchantservice;
-    private final MerchantStockService merchantstockservice;
+//    private final MerchantStockService merchantstockservice;
 
     @GetMapping("getmerchant")
    public ArrayList<Merchant> getMerchant(){
         return merchantservice.getMerchantList();
     }
     @PostMapping("addmerchant")
-    public ResponseEntity addMerchant(@RequestBody @Valid  Merchant merchant, Errors errors){
-        if (errors.hasErrors()){
-            String errormessage = errors.getFieldError().getDefaultMessage();
-            return ResponseEntity.status(400).body(errormessage);
-        }
+    public ResponseEntity addMerchant(@RequestBody @Valid  Merchant merchant){
         merchantservice.addMerchant(merchant);
         return ResponseEntity.status(200).body(new ApiResponse("merchant added"));
     }
 
     @PutMapping("updatemerchant/{merchantId}")
-    public ResponseEntity updatemerchant( @PathVariable Integer merchantId,@RequestBody @Valid Merchant merchant,Errors errors){
-        if(errors.hasErrors()){
-            String errormessage = errors.getFieldError().getDefaultMessage();
-            return ResponseEntity.status(400).body(errormessage);
-        }
+    public ResponseEntity updatemerchant( @PathVariable Integer merchantId,@RequestBody @Valid Merchant merchant){
         boolean isUpdatemerchant = merchantservice.updateMerchant(merchantId,merchant);
         if(isUpdatemerchant){
-            merchantservice.updateMerchant(merchantId,merchant);
             return ResponseEntity.status(200).body(new ApiResponse("Merchant updated"));
         }
         return ResponseEntity.status(400).body(new ApiResponse("Wrong Merchant"));
     }
 
-   @DeleteMapping("deleteMerchant/{merchant}")
+   @DeleteMapping("deleteMerchant/{merchantId}")
     public ResponseEntity deleteMerchant(@PathVariable Integer merchantId){
         boolean isDelete = merchantservice.deleteMerchant(merchantId);
         if(isDelete){
@@ -56,6 +46,15 @@ public class MerchantController {
         }
         return ResponseEntity.status(400).body(new ApiResponse("Wrong MerchantId"));
     }
-    // missing method ..
+
+
+    @PutMapping("addmorestock/{productId}/{merchantId}/{amount}")
+    public ResponseEntity addMoreStock(@PathVariable  Integer productId ,@PathVariable  Integer merchantId , @PathVariable  Integer amount ){
+        boolean isAddMoreStock = merchantservice.addMoreStock(productId,merchantId,amount);
+        if(isAddMoreStock){
+            return ResponseEntity.status(200).body(new ApiResponse("addMoreStock done"));
+        }
+        return ResponseEntity.status(400).body(new ApiResponse("Wrong addMoreStock"));
+    }
 
 }

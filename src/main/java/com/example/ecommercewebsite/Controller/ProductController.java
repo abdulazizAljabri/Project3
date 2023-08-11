@@ -24,12 +24,7 @@ public class ProductController {
   }
 
   @PostMapping("addProduct")
-  public ResponseEntity addProduct(@RequestBody @Valid Product product , Errors errors) {
-      if(errors.hasErrors())
-      {
-          String errormessage = errors.getFieldError().getDefaultMessage();
-          return ResponseEntity.status(400).body(errormessage);
-      }
+  public ResponseEntity addProduct(@RequestBody @Valid Product product) {
       if(categoryService.checkCategory(product.getCategoryId()))
       {
           products.addProduct(product);
@@ -38,11 +33,7 @@ public class ProductController {
      return ResponseEntity.status(400).body(new ApiResponse("Wrong categoryId"));
   }
   @PutMapping("updateProduct/{productId}")
-    public ResponseEntity updateProduct(@PathVariable @Valid Integer productId,@RequestBody @Valid Product product,Errors errors){
-      if(errors.hasErrors()){
-          String errormessage = errors.getFieldError().getDefaultMessage();
-          return ResponseEntity.status(400).body(errormessage);
-      }
+    public ResponseEntity updateProduct(@PathVariable @Valid Integer productId,@RequestBody @Valid Product product){
       if(categoryService.checkCategory(product.getCategoryId())){
           boolean isUpdate = products.updateProduct(productId, product);
           if(isUpdate){

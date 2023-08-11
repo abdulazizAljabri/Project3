@@ -30,11 +30,7 @@ public class CategoryController {
     }
 
     @PutMapping("update/{categoryId}")
-    public ResponseEntity updateCategory(@PathVariable @Valid Integer categoryId, @RequestBody @Valid Category category, Errors errors) {
-        if (errors.hasErrors()) {
-            String errormessage = errors.getFieldError().getDefaultMessage();
-            return ResponseEntity.status(400).body(errormessage);
-        }
+    public ResponseEntity updateCategory(@PathVariable @Valid Integer categoryId, @RequestBody @Valid Category category) {
         boolean isUpdate = categoryService.updateCategory(categoryId, category);
         if (isUpdate) {
             return ResponseEntity.status(200).body(new ApiResponse("Category Updated "));
