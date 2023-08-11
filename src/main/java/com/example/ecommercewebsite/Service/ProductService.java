@@ -2,6 +2,8 @@ package com.example.ecommercewebsite.Service;
 
 
 import com.example.ecommercewebsite.Model.Product;
+import com.example.ecommercewebsite.repository.ProductsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -9,36 +11,31 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
-    ArrayList<Product> products = new ArrayList<>();
+    private final ProductsRepository productsRepository;
 
     public ArrayList<Product> getProducts() {
-        return products;
+        return productsRepository.getProducts();
     }
-    public Product addProduct(Product product) {
-        products.add(product);
-        return product;
+    public void addProduct(Product product) {
+        productsRepository.addProduct(product);
     }
 
-    public void updateProduct(Integer productId,Product product){
+    public Product updateProduct(Integer productId,Product product){
      try{
-         var updateProduct = products.stream().filter(p -> p.getProductId().equals(productId)).findFirst().orElseThrow();
+         var updateProduct = productsRepository.getProducts().stream().filter(p -> p.getProductId().equals(productId)).findFirst().orElseThrow();
          updateProduct.setProductId(product.getProductId());
          updateProduct.setProductName(product.getProductName());
          updateProduct.setProductPrice(product.getProductPrice());
      }catch (NoSuchElementException exception){
          throw new NotFoundException("Merchant ID" + productId + "not found");
      }
+     return productsRepository.updateProduct(product);
     }
 
-    public boolean deleteProduct(Integer productId){
-        for(int index = 0; index < products.size();index++){
-            if(products.get(index).getProductId() == productId){
-                products.remove(index);
-                return true;
-            }
-        }
-        return false;
+    public void deleteProduct(Integer productId){
+        productsRepository.removeProduct(productId);
     }
 
 }

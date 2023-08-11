@@ -4,43 +4,42 @@ import com.example.ecommercewebsite.ApiResponse.ApiResponse;
 import com.example.ecommercewebsite.Model.User;
 import com.example.ecommercewebsite.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @RestController
-@RequestMapping("/api/v1/Users/")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("getusers")
-    public ArrayList<User> getUsers() {
-        return userService.getUsers();
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse> getUsers() {
+        var users = userService.getUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("user has been created", users, HttpStatus.OK.value()));
+
     }
 
-    @PostMapping("adduser")
-    public ResponseEntity addUser(User user) {
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse> addUser(@RequestBody User user) {
         userService.addUser(user);
-        return ResponseEntity.status(200).body(new ApiResponse("user added"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("user has been created", user, HttpStatus.CREATED.value()));
     }
 
-    @PutMapping("updateuser/{userId}")
-    public ResponseEntity updateUser( @PathVariable Integer userId ,User user) {
-        boolean isUpdate = userService.updateUser(userId, user);
-        if (isUpdate){
-            return ResponseEntity.status(200).body(new ApiResponse("user updated"));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong UserId"));
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse> updateUser(@PathVariable Integer userId, @RequestBody User user) {
+        var updatedUser = userService.updateUser(userId, user);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("user has been updated", updatedUser, HttpStatus.CREATED.value()));
+
     }
-    @DeleteMapping("deleteuser/{userId}")
-    public ResponseEntity deleteUser(@PathVariable Integer userId){
-        boolean isDelete = userService.removeUser(userId);
-        if (isDelete){
-            return ResponseEntity.status(200).body(new ApiResponse("user deleted"));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong UserId"));
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable Integer userId) {
+
+        userService.removeUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("user has been deleted"));
+
     }
     // missing method for user can buy product.
 }

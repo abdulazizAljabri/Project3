@@ -36,13 +36,11 @@ public class MerchantController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchant has been updated", merchant, HttpStatus.OK.value()));
     }
 
-    @DeleteMapping("deleteMerchant/{merchantId}")
+    @DeleteMapping("/{merchantId}")
     public ResponseEntity<ApiResponse> deleteMerchant(@PathVariable Integer merchantId) {
-        boolean isDelete = merchantservice.deleteMerchant(merchantId);
-        if (isDelete) {
+        merchantservice.deleteMerchant(merchantId);
             return ResponseEntity.status(200).body(new ApiResponse("Merchant deleted"));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong MerchantId"));
+
     }
 
 

@@ -3,6 +3,7 @@ package com.example.ecommercewebsite.Service;
 import com.example.ecommercewebsite.Model.Merchant;
 import com.example.ecommercewebsite.Model.MerchantStock;
 import com.example.ecommercewebsite.Model.Product;
+import com.example.ecommercewebsite.repository.MerchantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +13,17 @@ import java.util.NoSuchElementException;
 @Service
 @AllArgsConstructor
 public class MerchantService {
-    ArrayList<Product> productList = new ArrayList<>();
-    ArrayList<MerchantStock> merchantStockList = new ArrayList<>();
-    ArrayList<Merchant> merchantList = new ArrayList<>();
+    private final MerchantRepository merchantrepository;
 
 
     private final MerchantStockService merchantStockService;
 
     public ArrayList<Merchant> getMerchantList() {
-        return merchantList;
+        return merchantrepository.getAll();
     }
 
     public Merchant addMerchant(Merchant merchant) {
-        merchantList.add(merchant);
+        merchantrepository.addMerchant(merchant);
         return merchant;
     }
 
@@ -32,7 +31,7 @@ public class MerchantService {
     public void updateMerchant(Integer merchantId, Merchant merchant) {
 
         try {
-            var updatedMerchant = merchantList.stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
+            var updatedMerchant = merchantrepository.getAll().stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
             updatedMerchant.setMerchantId(merchant.getMerchantId());
             updatedMerchant.setMerchantName(merchant.getMerchantName());
         } catch (NoSuchElementException exception) {
@@ -42,14 +41,8 @@ public class MerchantService {
 
     }
 
-    public boolean deleteMerchant(Integer merchantId) {
-        for (int index = 0; index < merchantList.size(); index++) {
-            if (merchantList.get(index).getMerchantId().equals(merchantId)) {
-                merchantList.remove(index);
-                return true;
-            }
-        }
-        return false;
+    public void deleteMerchant(Integer merchantId) {
+        merchantrepository.removeMerchant(merchantId);
     }
 
     public void addMoreStock(Integer productId, Integer merchantId, Integer amount) {

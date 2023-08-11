@@ -35,17 +35,15 @@ public class ProductController {
   }
   @PutMapping("/{productId}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable @Valid Integer productId,@RequestBody @Valid Product product){
-       products.updateProduct(productId,product);
-      return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Product has been updated", product, HttpStatus.OK.value()));
+       var updatedProduct = products.updateProduct(productId,product);
+      return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Product has been updated", updatedProduct, HttpStatus.OK.value()));
   }
 
-  @DeleteMapping("deleteProduct/{productId}")
+  @DeleteMapping("/{productId}")
     public ResponseEntity deleteProduct (@PathVariable @Valid Integer productId){
-      boolean isDelete = products.deleteProduct(productId);
-      if(isDelete){
-          return ResponseEntity.status(200).body(new ApiResponse("Delete product"));
-      }
-      return ResponseEntity.status(400).body(new ApiResponse("Wrong product"));
+       products.deleteProduct(productId);
+          return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("product has been deleted"));
+
   }
 
 

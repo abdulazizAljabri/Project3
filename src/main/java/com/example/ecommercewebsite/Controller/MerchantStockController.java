@@ -19,7 +19,7 @@ public class MerchantStockController {
 
 
     @GetMapping("getmerchantstock")
-    public ArrayList<MerchantStock> getMerchantStock(){
+    public ArrayList<MerchantStock> getMerchantStock() {
         return merchantStockService.getMerchantStockList();
     }
 
@@ -30,21 +30,15 @@ public class MerchantStockController {
     }
 
     @PutMapping("updatemerchantstock/{merchantStockId}")
-    public ResponseEntity updateMerchantStock(@RequestBody MerchantStock stock , @PathVariable Integer merchantStockId){
-        boolean isUpdateMerchantStock = merchantStockService.updateMerchantStock(merchantStockId , stock);
-        if(isUpdateMerchantStock){
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been updated", merchantStockId, HttpStatus.OK.value()));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong Merchant StockID"));
+    public ResponseEntity updateMerchantStock(@RequestBody MerchantStock stock, @PathVariable Integer merchantStockId) {
+        merchantStockService.updateMerchantStock(merchantStockId, stock);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been updated", merchantStockId, HttpStatus.OK.value()));
     }
 
     @DeleteMapping("deletemerchantstock/{merchantStockId}")
-    public ResponseEntity deleteMerchantStock(@PathVariable Integer merchantStockId){
-        boolean isDelete = merchantStockService.deleteMerchantStock(merchantStockId);
-        if (isDelete){
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been deleted", merchantStockId, HttpStatus.OK.value()));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong Merchant StockID"));
+    public ResponseEntity deleteMerchantStock(@PathVariable Integer merchantStockId) {
+        merchantStockService.deleteMerchantStock(merchantStockId);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been deleted", merchantStockId, HttpStatus.OK.value()));
     }
 
 
