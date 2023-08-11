@@ -5,6 +5,7 @@ import com.example.ecommercewebsite.Model.Category;
 import com.example.ecommercewebsite.Service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -12,30 +13,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/v1/categorys/")
+@RequestMapping("/api/v1/categorys")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("get")
+    @GetMapping("/")
     public ArrayList<Category> getCategoryService() {
         return categoryService.getCategorieList();
     }
 
-    @PostMapping("add")
-    public ResponseEntity<Object> addCategory(@RequestBody @Valid Category category) {
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse> addCategory(@RequestBody @Valid Category category) {
         categoryService.addCategory(category);
-        return ResponseEntity.status(200).body(new ApiResponse("Category added"));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category has been added",category,HttpStatus.OK.value()));
     }
 
-    @PutMapping("update/{categoryId}")
-    public ResponseEntity updateCategory(@PathVariable @Valid Integer categoryId, @RequestBody @Valid Category category) {
-        boolean isUpdate = categoryService.updateCategory(categoryId, category);
-        if (isUpdate) {
-            return ResponseEntity.status(200).body(new ApiResponse("Category Updated "));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong category"));
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<ApiResponse>updateCategory(@PathVariable @Valid Integer categoryId, @RequestBody @Valid Category category) {
+        categoryService.updateCategory(categoryId, category);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category has been updated", category, HttpStatus.OK.value()));
     }
 
     @DeleteMapping("delete/{categoryId}")

@@ -3,46 +3,48 @@ package com.example.ecommercewebsite.Service;
 import com.example.ecommercewebsite.Model.Merchant;
 import com.example.ecommercewebsite.Model.MerchantStock;
 import com.example.ecommercewebsite.Model.Product;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class MerchantService {
     ArrayList<Product> productList = new ArrayList<>();
     ArrayList<MerchantStock> merchantStockList = new ArrayList<>();
     ArrayList<Merchant> merchantList = new ArrayList<>();
 
-    public ArrayList<MerchantStock> getMerchantStockList() {
-        return merchantStockList;
-    }
 
-    public ArrayList<Product> getProductList() {
-        return productList;
-    }
+    private final MerchantStockService merchantStockService;
+
     public ArrayList<Merchant> getMerchantList() {
         return merchantList;
     }
 
-
-    public void addMerchant(Merchant merchant) {
+    public Merchant addMerchant(Merchant merchant) {
         merchantList.add(merchant);
+        return merchant;
     }
 
 
-    public boolean updateMerchant(Integer merchantId ,Merchant merchant) {
-        for (int index = 0; index < merchantList.size(); index++) {
-            if(merchantList.get(index).getMerchantId().equals(merchantId)){
-                merchantList.set(index,merchant);
-                return true;
-            }
+    public void updateMerchant(Integer merchantId, Merchant merchant) {
+
+        try {
+            var updatedMerchant = merchantList.stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
+            updatedMerchant.setMerchantId(merchant.getMerchantId());
+            updatedMerchant.setMerchantName(merchant.getMerchantName());
+        } catch (NoSuchElementException exception) {
+            throw new NotFoundException("Merchant ID" + merchantId + "not found");
         }
-        return false;
+
+
     }
 
-    public boolean deleteMerchant(Integer merchantId){
-        for (int index = 0; index < merchantList.size(); index++){
-            if(merchantList.get(index).getMerchantId().equals(merchantId)){
+    public boolean deleteMerchant(Integer merchantId) {
+        for (int index = 0; index < merchantList.size(); index++) {
+            if (merchantList.get(index).getMerchantId().equals(merchantId)) {
                 merchantList.remove(index);
                 return true;
             }
@@ -50,21 +52,16 @@ public class MerchantService {
         return false;
     }
 
-    public boolean addMoreStock(Integer productId , Integer merchantId , Integer amount ){
-       for(int index = 0; index < merchantList.size(); index++){
-           if(merchantList.get(index).getMerchantId().equals(merchantId)){
-               for (int index2 = 0; index2 < merchantStockList.size(); index2++){
-                   if(merchantStockList.get(index2).getProductId().equals(productId)){
-                      int newStock = merchantStockList.get(index2).getStock() + amount;
-                      merchantStockList.get(index2).setStock(newStock);
-                      return true;
-                   }
-                   }
-               }
-           }
-              return false;
-       }
+    public void addMoreStock(Integer productId, Integer merchantId, Integer amount) {
+        try {
+            var merchantStock = merchantStockService.getMerchantStockList().stream().filter(stock -> stock.getMerchantId().equals(merchantId) && stock.getProductId().equals(productId)).findFirst().orElseThrow();
+            merchantStock.setStock(merchantStock.getStock() + amount);
+        } catch (NoSuchElementException exception) {
+            throw new NotFoundException("Could not find merchent stock for product " + productId + " and merchant " + merchantId);
+        }
+
     }
+}
 
 
 

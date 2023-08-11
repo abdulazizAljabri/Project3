@@ -2,59 +2,54 @@ package com.example.ecommercewebsite.Controller;
 
 import com.example.ecommercewebsite.ApiResponse.ApiResponse;
 import com.example.ecommercewebsite.Model.Merchant;
+import com.example.ecommercewebsite.Model.MerchantStock;
 import com.example.ecommercewebsite.Service.MerchantService;
-import com.example.ecommercewebsite.Service.MerchantStockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/v1/merchant/")
+@RequestMapping("/api/v1/merchants")
 @RequiredArgsConstructor
 public class MerchantController {
 
     private final MerchantService merchantservice;
-//    private final MerchantStockService merchantstockservice;
 
-    @GetMapping("getmerchant")
-   public ArrayList<Merchant> getMerchant(){
-        return merchantservice.getMerchantList();
-    }
-    @PostMapping("addmerchant")
-    public ResponseEntity addMerchant(@RequestBody @Valid  Merchant merchant){
-        merchantservice.addMerchant(merchant);
-        return ResponseEntity.status(200).body(new ApiResponse("merchant added"));
+    @GetMapping("/")
+    public ResponseEntity<ArrayList<Merchant>> getMerchant() {
+        return ResponseEntity.status(HttpStatus.OK).body(merchantservice.getMerchantList());
     }
 
-    @PutMapping("updatemerchant/{merchantId}")
-    public ResponseEntity updatemerchant( @PathVariable Integer merchantId,@RequestBody @Valid Merchant merchant){
-        boolean isUpdatemerchant = merchantservice.updateMerchant(merchantId,merchant);
-        if(isUpdatemerchant){
-            return ResponseEntity.status(200).body(new ApiResponse("Merchant updated"));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong Merchant"));
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse> addMerchant(@RequestBody @Valid Merchant merchant) {
+        var createdMerchant = merchantservice.addMerchant(merchant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("merchant has been created", createdMerchant, HttpStatus.CREATED.value()));
     }
 
-   @DeleteMapping("deleteMerchant/{merchantId}")
-    public ResponseEntity deleteMerchant(@PathVariable Integer merchantId){
+    @PutMapping("/{merchantId}")
+    public ResponseEntity<ApiResponse> updateMerchant(@PathVariable Integer merchantId, @RequestBody @Valid Merchant merchant) {
+         merchantservice.updateMerchant(merchantId, merchant);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchant has been updated", merchant, HttpStatus.OK.value()));
+    }
+
+    @DeleteMapping("deleteMerchant/{merchantId}")
+    public ResponseEntity<ApiResponse> deleteMerchant(@PathVariable Integer merchantId) {
         boolean isDelete = merchantservice.deleteMerchant(merchantId);
-        if(isDelete){
+        if (isDelete) {
             return ResponseEntity.status(200).body(new ApiResponse("Merchant deleted"));
         }
         return ResponseEntity.status(400).body(new ApiResponse("Wrong MerchantId"));
     }
 
 
-    @PutMapping("addmorestock/{productId}/{merchantId}/{amount}")
-    public ResponseEntity addMoreStock(@PathVariable  Integer productId ,@PathVariable  Integer merchantId , @PathVariable  Integer amount ){
-        boolean isAddMoreStock = merchantservice.addMoreStock(productId,merchantId,amount);
-        if(isAddMoreStock){
-            return ResponseEntity.status(200).body(new ApiResponse("addMoreStock done"));
-        }
-        return ResponseEntity.status(400).body(new ApiResponse("Wrong addMoreStock"));
+    @PutMapping("/moreStock")
+    public ResponseEntity<ApiResponse> addMoreStock(@RequestBody @Valid MerchantStock merchantStock) {
+        merchantservice.addMoreStock(merchantStock.getProductId(), merchantStock.getMerchantId(), merchantStock.getStock());
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("addMoreStock done"));
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 @Service
 public class ProductService {
@@ -14,18 +15,20 @@ public class ProductService {
     public ArrayList<Product> getProducts() {
         return products;
     }
-    public void addProduct(Product product) {
+    public Product addProduct(Product product) {
         products.add(product);
+        return product;
     }
 
-    public boolean updateProduct(Integer productId,Product product){
-        for(int index = 0; index < products.size(); index++){
-            if(products.get(index).getProductId() == productId){
-                products.set(index, product);
-                return true;
-            }
-        }
-        return false;
+    public void updateProduct(Integer productId,Product product){
+     try{
+         var updateProduct = products.stream().filter(p -> p.getProductId().equals(productId)).findFirst().orElseThrow();
+         updateProduct.setProductId(product.getProductId());
+         updateProduct.setProductName(product.getProductName());
+         updateProduct.setProductPrice(product.getProductPrice());
+     }catch (NoSuchElementException exception){
+         throw new NotFoundException("Merchant ID" + productId + "not found");
+     }
     }
 
     public boolean deleteProduct(Integer productId){

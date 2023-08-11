@@ -4,6 +4,7 @@ import com.example.ecommercewebsite.Model.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 @Service
 public class CategoryService {
@@ -14,18 +15,21 @@ public class CategoryService {
         return categories;
     }
 
-    public void addCategory(Category category) {
+    public Category addCategory(Category category) {
         categories.add(category);
+        return category;
     }
 
-    public boolean updateCategory(Integer categoryId,Category category){
-        for (int index = 0; index < categories.size(); index++){
-            if (categories.get(index).getCategoryId() == categoryId){
-                categories.set(index, category);
-                return true;
-            }
+    public void updateCategory(Integer categoryId,Category category){
+        try{
+            var UpdatedCategories = categories.stream().filter(c -> c.getCategoryId()== categoryId).findFirst().orElseThrow();
+            UpdatedCategories.setCategoryId(category.getCategoryId());
+            UpdatedCategories.setCategoryName(category.getCategoryName());
+        }catch (NoSuchElementException exception){
+            throw new NotFoundException("Category "+ category.getCategoryId() + " does not exist");
         }
-        return false;
+
+
     }
 
     public boolean deleteCategory(Integer categoryId){
