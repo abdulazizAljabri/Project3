@@ -27,5 +27,5 @@ public class User {
 
     @NotEmpty(message = "should be not empty")
     @Positive
-    private Integer balance;
+    private Double balance;
 }

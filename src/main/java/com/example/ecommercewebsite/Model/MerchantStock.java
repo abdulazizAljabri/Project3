@@ -1,25 +1,26 @@
 package com.example.ecommercewebsite.Model;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 @AllArgsConstructor
 public class MerchantStock {
-    @NotEmpty(message = "should not be empty")
+
     private Integer merchantStockId;
 
-    @NotEmpty(message = "should not be empty")
+
+    @NotNull(message = "product id is required")
     private Integer productId;
 
-    @NotEmpty(message = "should not be empty")
+    @NotNull(message = "merchant id is required")
     private Integer merchantId;
 
-    @NotEmpty(message = "should not be empty")
-    @Size(min = 10,message = "should be more then 10")
-    private Integer stock;
+    @NotNull(message = "stock is required")
+        private Integer stock;
 
 
 }
