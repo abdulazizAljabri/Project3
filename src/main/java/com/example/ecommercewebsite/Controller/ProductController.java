@@ -7,10 +7,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
@@ -26,7 +26,7 @@ public class ProductController {
   }
 
   @PostMapping("/")
-  public ResponseEntity addProduct(@RequestBody @Valid Product product) {
+  public ResponseEntity<ApiResponse> addProduct(@RequestBody @Valid Product product) {
       if(categoryService.checkCategory(product.getCategoryId()))
       {
           products.addProduct(product);
@@ -41,7 +41,7 @@ public class ProductController {
   }
 
   @DeleteMapping("/{productId}")
-    public ResponseEntity deleteProduct (@PathVariable @Valid Integer productId){
+    public ResponseEntity<ApiResponse> deleteProduct (@PathVariable @Valid Integer productId){
        products.deleteProduct(productId);
           return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("product has been deleted"));
 

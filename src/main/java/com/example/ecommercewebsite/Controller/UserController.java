@@ -1,7 +1,7 @@
 package com.example.ecommercewebsite.Controller;
 
 import com.example.ecommercewebsite.ApiResponse.ApiResponse;
-import com.example.ecommercewebsite.Model.Product;
+
 import com.example.ecommercewebsite.Model.User;
 import com.example.ecommercewebsite.Service.UserService;
 import lombok.RequiredArgsConstructor;

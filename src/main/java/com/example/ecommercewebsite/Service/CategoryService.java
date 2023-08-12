@@ -5,7 +5,6 @@ import com.example.ecommercewebsite.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,9 +25,9 @@ public class CategoryService {
 
     public void updateCategory(Integer categoryId,Category category){
         try{
-            var UpdatedCategories = categoryRepository.findAll().stream().filter(c -> c.getCategoryId()== categoryId).findFirst().orElseThrow();
-            UpdatedCategories.setCategoryId(category.getCategoryId());
-            UpdatedCategories.setCategoryName(category.getCategoryName());
+            var updatedCategories = categoryRepository.findAll().stream().filter(c -> c.getCategoryId().equals(categoryId) ).findFirst().orElseThrow();
+            updatedCategories.setCategoryId(category.getCategoryId());
+            updatedCategories.setCategoryName(category.getCategoryName());
         }catch (NoSuchElementException exception){
             throw new NotFoundException("Category "+ category.getCategoryId() + " does not exist");
         }
@@ -42,7 +41,7 @@ public class CategoryService {
 
     public boolean checkCategory(Integer categoryId){
         for (int index = 0; index < categoryRepository.findAll().size(); index++){
-            if(categoryRepository.findAll().get(index).getCategoryId() == categoryId){
+            if(categoryRepository.findAll().get(index).getCategoryId().equals(categoryId)){
                 return true;
             }
         }
