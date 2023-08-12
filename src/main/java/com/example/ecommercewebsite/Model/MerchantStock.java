@@ -1,6 +1,8 @@
 package com.example.ecommercewebsite.Model;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -20,6 +22,7 @@ public class MerchantStock {
     private Integer merchantId;
 
     @NotNull(message = "stock is required")
+    @Min(value = 10 , message = "Shlould be greater then 10 ")
         private Integer stock;
 
 
