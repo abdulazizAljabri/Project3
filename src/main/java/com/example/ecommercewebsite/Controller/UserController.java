@@ -1,6 +1,7 @@
 package com.example.ecommercewebsite.Controller;
 
 import com.example.ecommercewebsite.ApiResponse.ApiResponse;
+import com.example.ecommercewebsite.Model.Product;
 import com.example.ecommercewebsite.Model.User;
 import com.example.ecommercewebsite.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("user has been deleted"));
 
     }
-    // missing method for user can buy product.
+    @GetMapping("/buy/{userId}/{productId}/{merchantId}")
+    public ResponseEntity<ApiResponse> buy(@PathVariable Integer userId,@PathVariable Integer productId,@PathVariable Integer merchantId) {
+        userService.buyAProduct(userId, productId, merchantId);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Buying succeeded "));
+    }
+
+
 }
