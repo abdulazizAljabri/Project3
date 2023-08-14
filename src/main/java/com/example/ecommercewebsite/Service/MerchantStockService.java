@@ -1,39 +1,45 @@
 package com.example.ecommercewebsite.Service;
 
 import com.example.ecommercewebsite.Model.MerchantStock;
-import com.example.ecommercewebsite.repository.MerchantStockRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
 public class MerchantStockService {
-    private final MerchantStockRepository merchantstockrepository;
 
-    public List<MerchantStock> getMerchantStockList() {
-        return this.merchantstockrepository.findAll();
+    private final List<MerchantStock> stockList = new ArrayList<>();
+
+    public List<MerchantStock> findAll(){
+        return this.stockList;
     }
-    public void addMerchantStock(MerchantStock stock) {
-        merchantstockrepository.add(stock);
+    public void add(MerchantStock stock){
+        stockList.add(stock);
     }
 
-    public MerchantStock updateMerchantStock( Integer merchantStockId ,MerchantStock stock){
-        try{
-            var updateMerchantStock = merchantstockrepository.findAll().stream().filter(m -> m.getMerchantStockId().equals(merchantStockId)).findFirst().orElseThrow();
-            updateMerchantStock.setProductId(stock.getProductId());
-            updateMerchantStock.setMerchantId(stock.getMerchantId());
-            updateMerchantStock.setStock(stock.getStock());
-        }catch (NoSuchElementException exception){
-            throw new NotFoundException("MerchantStock ID" + merchantStockId + "not found");
+    public MerchantStock findById(Integer id){
+        return stockList.stream().filter(stock -> stock.getMerchantStockId().equals(id)).findFirst().orElseThrow();
+    }
+    public void removeById(Integer id) {
+        var user = findById(id);
+        stockList.remove(user);
+    }
+    public MerchantStock update(Integer id , MerchantStock stock) {
+        var updatedStock = findById(stock.getMerchantStockId());
+        updatedStock.setProductId(stock.getProductId());
+        updatedStock.setStock(stock.getStock());
+        updatedStock.setMerchantId(stock.getMerchantId());
+        return updatedStock;
+    }
+
+    public void addMoreStock(Integer id , Integer merchantId , int amount ){
+        for(int index = 0 ; index < stockList.size(); index++){
+            if(stockList.get(index).equals(id) && stockList.get(index).equals(merchantId)){
+
+            }
         }
-        return merchantstockrepository.update(stock);
-
-    }
-    public void deleteMerchantStock(Integer merchantStockId){
-        merchantstockrepository.removeById(merchantStockId);
     }
 
 }

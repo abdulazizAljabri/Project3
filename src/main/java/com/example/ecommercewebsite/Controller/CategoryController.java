@@ -7,10 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,12 +20,12 @@ public class CategoryController {
 
     @GetMapping("/")
     public List<Category> getCategoryService() {
-        return categoryService.getCategories();
+        return categoryService.findAll();
     }
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse> addCategory(@RequestBody @Valid Category category) {
-        categoryService.addCategory(category);
+        categoryService.add(category);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category has been added",category,HttpStatus.OK.value()));
     }
 
@@ -39,7 +37,7 @@ public class CategoryController {
 
     @DeleteMapping("delete/{categoryId}")
     public ResponseEntity deleteCategory(@PathVariable Integer categoryId) {
-          categoryService.deleteCategory(categoryId);
+          categoryService.removeById(categoryId);
             return ResponseEntity.status(200).body(new ApiResponse("Category deleted"));
 
     }

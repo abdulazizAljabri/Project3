@@ -22,24 +22,24 @@ public class MerchantController {
 
     @GetMapping("/")
     public ResponseEntity<List<Merchant>> getMerchant() {
-        return ResponseEntity.status(HttpStatus.OK).body(merchantservice.getMerchantList());
+        return ResponseEntity.status(HttpStatus.OK).body(merchantservice.findAll());
     }
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse> addMerchant(@RequestBody @Valid Merchant merchant) {
-        var createdMerchant = merchantservice.addMerchant(merchant);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("merchant has been created", createdMerchant, HttpStatus.CREATED.value()));
+        merchantservice.add(merchant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("merchant has been created"));
     }
 
     @PutMapping("/{merchantId}")
     public ResponseEntity<ApiResponse> updateMerchant(@PathVariable Integer merchantId, @RequestBody @Valid Merchant merchant) {
-         merchantservice.updateMerchant(merchantId, merchant);
+         merchantservice.updateMerchant(merchant, merchantId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchant has been updated", merchant, HttpStatus.OK.value()));
     }
 
     @DeleteMapping("/{merchantId}")
     public ResponseEntity<ApiResponse> deleteMerchant(@PathVariable Integer merchantId) {
-        merchantservice.deleteMerchant(merchantId);
+        merchantservice.removeById(merchantId);
             return ResponseEntity.status(200).body(new ApiResponse("Merchant deleted"));
 
     }

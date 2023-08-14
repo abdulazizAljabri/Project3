@@ -21,24 +21,24 @@ public class MerchantStockController {
 
     @GetMapping("getmerchantstock")
     public List<MerchantStock> getMerchantStock() {
-        return merchantStockService.getMerchantStockList();
+        return merchantStockService.findAll();
     }
 
     @PostMapping("addmerchantstock")
     public ResponseEntity<ApiResponse> addMerchantStock(@RequestBody MerchantStock merchantstock) {
-        merchantStockService.addMerchantStock(merchantstock);
+        merchantStockService.add(merchantstock);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been updated", merchantstock, HttpStatus.OK.value()));
     }
 
     @PutMapping("updatemerchantstock/{merchantStockId}")
     public ResponseEntity updateMerchantStock(@RequestBody MerchantStock stock, @PathVariable Integer merchantStockId) {
-        merchantStockService.updateMerchantStock(merchantStockId, stock);
+        merchantStockService.update(merchantStockId, stock);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been updated", merchantStockId, HttpStatus.OK.value()));
     }
 
     @DeleteMapping("deletemerchantstock/{merchantStockId}")
     public ResponseEntity deleteMerchantStock(@PathVariable Integer merchantStockId) {
-        merchantStockService.deleteMerchantStock(merchantStockId);
+        merchantStockService.removeById(merchantStockId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("merchantStock has been deleted", merchantStockId, HttpStatus.OK.value()));
     }
 

@@ -1,8 +1,6 @@
 package com.example.ecommercewebsite.Service;
 
 import com.example.ecommercewebsite.Model.User;
-import com.example.ecommercewebsite.repository.MerchantRepository;
-import com.example.ecommercewebsite.repository.MerchantStockRepository;
 import com.example.ecommercewebsite.repository.ProductsRepository;
 import com.example.ecommercewebsite.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -17,8 +15,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ProductsRepository productsRepository;
-    private final MerchantStockRepository merchantStockRepository;
-    private final MerchantRepository merchantRepository;
+    private final MerchantStockService merchantStockService;
+    private final MerchantService merchantService;
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -44,8 +42,8 @@ public class UserService {
         try {
             var user = userRepository.findAll().stream().filter(u -> u.getUserId().equals(userId)).findFirst().orElseThrow();
             var product =productsRepository.findAll().stream().filter(p -> p.getProductId().equals(productId)).findFirst().orElseThrow();
-            var merchant = merchantRepository.findAll().stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
-            var stock = merchantStockRepository.findAll().stream().filter(s -> s.getProductId().equals(productId) && s.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
+            var merchant = merchantService.findAll().stream().filter(m -> m.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
+            var stock = merchantStockService.findAll().stream().filter(s -> s.getProductId().equals(productId) && s.getMerchantId().equals(merchantId)).findFirst().orElseThrow();
             if (user.getBalance() < product.getProductPrice()) {
                 throw new IllegalArgumentException("User did not have enough balance to buy the product");
             }
